@@ -61,10 +61,6 @@ class DucksController < ApplicationController
   # POST /ducks.json
   def create
     @duck = Duck.new(duck_params)
-    associations_params.each do |association_params|
-      assoc = Association.find_by_id(Integer(association_params[1][:id]))
-      assoc.update(association_params[1])
-    end
 
     respond_to do |format|
       if @duck.save
@@ -80,11 +76,6 @@ class DucksController < ApplicationController
   # PATCH/PUT /ducks/1
   # PATCH/PUT /ducks/1.json
   def update
-    associations_params.each do |association_params|
-      assoc = Association.find_by_id(Integer(association_params[1][:id]))
-      assoc.update(association_params[1])
-    end
-    
     respond_to do |format|
       if @duck.update(duck_params)
         format.html { redirect_to @duck, notice: 'Duck was successfully updated.' }
@@ -118,7 +109,7 @@ class DucksController < ApplicationController
     
     # Never trust parameters from the scary internet, only allow the white list through.
     def duck_params
-      params.require(:duck).permit(:name, :description)
+      params.require(:duck).permit(:name, :description, associations_attributes: [:id, :duck_id, :gift_id, :value])
     end
     def associations_params
       params.permit(associations: [:id, :duck_id, :gift_id, :value])

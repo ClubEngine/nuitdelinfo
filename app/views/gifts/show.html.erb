@@ -7,7 +7,8 @@
   <dt><strong><%= model_class.human_attribute_name(:name) %>:</strong></dt>
   <dd><%= @gift.name %></dd>
   <dt><strong><%= model_class.human_attribute_name(:link) %>:</strong></dt>
-  <dd><%= @gift.link %></dd>
+  <dd><%= image_tag(@gift.link, :alt => @gift.link, :width => "100") %></dd>
+
   <dt><strong><%= model_class.human_attribute_name(:description) %>:</strong></dt>
   <dd><%= @gift.description %></dd>
 </dl>

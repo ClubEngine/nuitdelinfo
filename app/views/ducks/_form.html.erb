@@ -14,7 +14,7 @@
 
   <h3>Gifts</h3>
   <% Gift.all.each do |gift| %>
-    <% assoc = Association.where(gift: gift).first || Association.create({duck: @duck, gift: gift, value: 50}) %>
+    <% assoc = @duck.associations.where(gift: gift).first || Association.create({duck: @duck, gift: gift, value: 50}) %>
     <%= fields_for :associations, assoc do |assoc_form| %>
       <%= assoc_form.hidden_field :id %>
       <%= assoc_form.hidden_field :gift_id %>

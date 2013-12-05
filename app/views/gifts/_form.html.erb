@@ -20,7 +20,7 @@
   
   <h3>Ducks</h3>
   <% Duck.all.each do |duck| %>
-    <% assoc = Association.where(duck: duck).first || Association.create({duck: duck, gift: @gift, value: 50}) %>
+    <% assoc = @gift.associations.where(duck: duck).first || Association.create({duck: duck, gift: @gift, value: 50}) %>
     <%= fields_for :associations, assoc do |assoc_form| %>
       <%= assoc_form.hidden_field :id %>
       <%= assoc_form.hidden_field :gift_id %>

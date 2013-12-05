@@ -15,6 +15,7 @@ define(['jquery', 'three', 'Scene'], function ($, THREE, Scene) {
 
 	var scene = new Scene();
 	scene.addDuck('carousel');
+	scene.addDuck('carousel');
 	scene.add(camera);
 	camera.position.z += 10;
 

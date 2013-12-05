@@ -11,7 +11,7 @@ define(
 
 		Scene.prototype.addDuck = function (duckName) {
 			var self = this;
-			this.loader.load('http://localhost/game/assets/jsobj/' + duckName + '.js', function (geometry, materials) {
+			this.loader.load('./assets/jsobj/' + duckName + '.js', function (geometry, materials) {
 				material = new THREE.MeshBasicMaterial( { color: 0xff0000 } );
 				var duck = new Duck(geometry, material);
 				self.add(duck);
@@ -19,7 +19,10 @@ define(
 		}
 
 		Scene.prototype.animate = function () {
-			this.children[1].step();
+			var nb = this.children.length;
+			for(var i = 1; i < nb; i++) {
+				this.children[i].step();
+			}
 		}
 
 		return Scene;

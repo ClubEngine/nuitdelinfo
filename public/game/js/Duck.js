@@ -15,6 +15,7 @@ define(
 		Duck.prototype.constructor = Duck;
 
 		Duck.prototype.step = function() {
+			this.speed.y-=0.01;
 			this.position.x += this.speed.x;
 			this.position.y += this.speed.y;
 			this.position.z += this.speed.z;

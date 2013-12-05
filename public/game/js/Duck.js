@@ -8,7 +8,7 @@ define(
 			THREE.Mesh.apply(this, arguments);
 
 			this.position = new THREE.Vector3(0, 0, 0);
-			this.speed = new THREE.Vector3(0, 0, 0);
+			this.speed = new THREE.Vector3((Math.random()-.5)/10, 0, 0);
 		};
 
 		Duck.prototype = Object.create(THREE.Mesh.prototype);

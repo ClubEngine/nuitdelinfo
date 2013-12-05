@@ -6,7 +6,7 @@ require.config({
     }
 });
 
-define(['jquery', 'three'], function ($, THREE) {
+define(['jquery', 'three', 'Scene'], function ($, THREE, Scene) {
     var camera, scene, renderer;
     var geometry, material, mesh;
 

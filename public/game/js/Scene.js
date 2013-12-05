@@ -1,32 +1,27 @@
 define(
 	["Duck","jquery","three"],
-	function (duck,$,THREE) {
-		var scene = function () {
-			// constructor
-			var ducks = new array()
+	function (Duck,$,THREE) {
+		var Scene = function () {
+			THREE.Scene.apply(this, arguments);
+			this.loader = new THREE.JSONLoader();
 		}
 
-		scene.prototype = {
-			init: function () {
-				ducks.push(new duck())
+		Scene.prototype = Object.create(THREE.Scene.prototype);
+		Scene.prototype.constructor = Scene;
 
-				this.camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 10000 );
-				this.camera.position.z = 1000;
-				this.scene = new THREE.Scene();
-				this.renderer = new THREE.CanvasRenderer();
-				this.renderer.setSize( window.innerWidth, window.innerHeight );
-
-				document.body.appendChild( renderer.domElement );
-					},
-
-			animate: function () {
-				requestanimationframe($.proxy(this.animate, this));
-				console.log('animate');
-				this.renderer.render( this.scene, this.camera );
-				// method
-			}
+		Scene.prototype.addDuck = function (duckName) {
+			var self = this;
+			this.loader.load('./assets/jsobj/' + duckName + '.js', function (geometry, materials) {
+				material = new THREE.MeshBasicMaterial( { color: 0xff0000 } );
+				var duck = new Duck(geometry, material);
+				self.add(duck);
+			});
 		}
 
-		return scene;
+		Scene.prototype.animate = function () {
+			this.children[1].step();
+		}
+
+		return Scene;
 	}
 );

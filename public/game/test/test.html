@@ -1,0 +1,36 @@
+<html>
+  <body>
+  	<div id="test"></div>
+  	<script src="http://threejs.org/three.min.js"></script>
+    <script type="text/javascript">
+    function loadDuck(d) {
+    	document.getElementById("test").innerHTML = d.duck;
+    }
+
+    function loadXMLDoc()
+	{
+		var xmlhttp;
+		if(window.XMLHttpRequest) {
+			xmlhttp = new XMLHttpRequest();
+		}
+		else {
+				xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+		}
+		xmlhttp.onreadystatechange=function()
+  		{
+  			document.getElementById("test").innerHTML = xmlhttp.readyState+"<br>"+xmlhttp.status;
+  			if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+    			var resp = JSON.parse(xmlhttp.responseText);
+    			loadDuck(resp);
+    		}
+  		}
+		xmlhttp.open("GET","test.txt",true);
+		xmlhttp.send();
+	}
+
+	//loadXMLDoc();
+	loadDuck({"duck": "dfkjhdg"});
+      
+    </script>
+  </body>
+</html>

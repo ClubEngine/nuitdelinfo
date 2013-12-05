@@ -18,7 +18,7 @@
       <tr>
         <td><%= link_to gift.id, gift_path(gift) %></td>
         <td><%= gift.name %></td>
-  		<td><%= image_tag(@gift.link, :alt => @gift.link, :width => "50") %></dd>
+  		<td><%= image_tag(gift.link, :alt => gift.link, :width => "50") %></td>
         <td><%= gift.description %></td>
         <td><%=l gift.created_at %></td>
         <td>

@@ -7,6 +7,9 @@ require.config({
 });
 
 define(['jquery', 'three', 'Scene'], function ($, THREE, Scene) {
+	var scene = new Scene();
+	scene.animate();
+
     var camera, scene, renderer;
     var geometry, material, mesh;
 

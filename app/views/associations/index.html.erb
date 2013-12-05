@@ -9,7 +9,6 @@
       <th><%= model_class.human_attribute_name(:duck_id) %></th>
       <th><%= model_class.human_attribute_name(:gift_id) %></th>
       <th><%= model_class.human_attribute_name(:value) %></th>
-      <th><%= model_class.human_attribute_name(:created_at) %></th>
       <th><%=t '.actions', :default => t("helpers.actions") %></th>
     </tr>
   </thead>
@@ -17,10 +16,9 @@
     <% @associations.each do |association| %>
       <tr>
         <td><%= link_to association.id, association_path(association) %></td>
-        <td><%= association.duck_id %></td>
-        <td><%= association.gift_id %></td>
+        <td><%= association.duck.name %></td>
+        <td><%= association.gift.name %></td>
         <td><%= association.value %></td>
-        <td><%=l association.created_at %></td>
         <td>
           <%= link_to t('.edit', :default => t("helpers.links.edit")),
                       edit_association_path(association), :class => 'btn btn-mini' %>

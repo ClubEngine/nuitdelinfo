@@ -1,6 +1,7 @@
 class Gift < ActiveRecord::Base
   has_many :associations
   has_many :ducks, through: :associations
+  accepts_nested_attributes_for :associations
   
   attr_accessor :score
   

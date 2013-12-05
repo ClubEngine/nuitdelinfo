@@ -12,6 +12,24 @@
     </div>
   </div>
 
+  <h3>Gifts</h3>
+  <% Gift.all.each do |gift| %>
+    <% assoc = Association.where(gift: gift).first || Association.create({duck: @duck, gift: gift, value: 50}) %>
+    <%= fields_for :associations, assoc do |assoc_form| %>
+      <%= assoc_form.hidden_field :id %>
+      <%= assoc_form.hidden_field :gift_id %>
+      <%= assoc_form.hidden_field :duck_id %>
+    
+      <div class="control-group">
+        <%= assoc_form.label gift.name, :class => 'control-label' %>
+        <div class="controls">
+          <%= assoc_form.number_field :value, :class => 'number_field' %>
+        </div>
+      </div>
+      
+    <% end %>
+  <% end %>
+
   <div class="form-actions">
     <%= f.submit nil, :class => 'btn btn-primary' %>
     <%= link_to t('.cancel', :default => t("helpers.links.cancel")),

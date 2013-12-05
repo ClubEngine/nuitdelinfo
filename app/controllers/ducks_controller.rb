@@ -4,7 +4,22 @@ class DucksController < ApplicationController
   # GET /ducks
   # GET /ducks.json
   def index
-    @ducks = Duck.all
+    if params[:random] == "true"
+      if ducks_yesno[:ducks_yes] && ducks_params[:ducks_no]
+        yes = ducks_yesno[:ducks_yes]
+        no = ducks_params[:ducks_no]
+        
+      else
+        if params[:number]
+          @ducks = Duck.order("RANDOM()").limit(Integer(params[:number]))
+        else
+          @ducks = Duck.order("RANDOM()").limit(1)
+        end
+      end
+    else
+      @ducks = Duck.all
+    end
+    
   end
 
   # GET /ducks/1
@@ -66,7 +81,11 @@ class DucksController < ApplicationController
     def set_duck
       @duck = Duck.find(params[:id])
     end
-
+    
+    def ducks_yesno
+      params.permit(:ducks_yes => [], :ducks_no => [])
+    end
+    
     # Never trust parameters from the scary internet, only allow the white list through.
     def duck_params
       params.require(:duck).permit(:name, :description)

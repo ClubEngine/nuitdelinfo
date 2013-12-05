@@ -16,8 +16,8 @@
     <% @associations.each do |association| %>
       <tr>
         <td><%= link_to association.id, association_path(association) %></td>
-        <td><%= association.duck.name %></td>
-        <td><%= association.gift.name %></td>
+        <td><%= if association.duck then association.duck.name end %></td>
+        <td><%= if association.gift then association.gift.name end %></td>
         <td><%= association.value %></td>
         <td>
           <%= link_to t('.edit', :default => t("helpers.links.edit")),

@@ -8,7 +8,7 @@ class GiftsController < ApplicationController
     if ducks_yesno[:ducks_yes] && ducks_params[:ducks_no]
       yes = ducks_yesno[:ducks_yes]
       no = ducks_params[:ducks_no]
-      
+      @gifts = Gift.bests(yes, no)
     end
   end
 

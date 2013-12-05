@@ -1,0 +1,26 @@
+<%= form_for @association, :html => { :class => 'form-horizontal' } do |f| %>
+  <div class="control-group">
+    <%= f.label :duck_id, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :duck_id, :class => 'text_field' %>
+    </div>
+  </div>
+  <div class="control-group">
+    <%= f.label :gift_id, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :gift_id, :class => 'text_field' %>
+    </div>
+  </div>
+  <div class="control-group">
+    <%= f.label :value, :class => 'control-label' %>
+    <div class="controls">
+      <%= f.text_field :value, :class => 'text_field' %>
+    </div>
+  </div>
+
+  <div class="form-actions">
+    <%= f.submit nil, :class => 'btn btn-primary' %>
+    <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+                associations_path, :class => 'btn' %>
+  </div>
+<% end %>

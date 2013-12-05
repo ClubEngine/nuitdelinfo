@@ -5,6 +5,11 @@ class GiftsController < ApplicationController
   # GET /gifts.json
   def index
     @gifts = Gift.all
+    if ducks_yesno[:ducks_yes] && ducks_params[:ducks_no]
+      yes = ducks_yesno[:ducks_yes]
+      no = ducks_params[:ducks_no]
+      
+    end
   end
 
   # GET /gifts/1
@@ -65,6 +70,11 @@ class GiftsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_gift
       @gift = Gift.find(params[:id])
+    end
+
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def ducks_yesno
+      params.permit(:ducks_yes => [], :ducks_no => [])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

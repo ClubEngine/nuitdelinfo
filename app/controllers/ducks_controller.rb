@@ -10,7 +10,6 @@ class DucksController < ApplicationController
         no = ducks_yesno[:ducks_no]
       	gifts = Gift.bests(yes,no)[0..19]  
 
-<<<<<<< HEAD
 		@best_pertinence = 0
 
 		# parcours tous les cannards, pour chaque cannard calcul la

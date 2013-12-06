@@ -9,7 +9,7 @@
       <th><%= model_class.human_attribute_name(:name) %></th>
       <th><%= model_class.human_attribute_name(:link) %></th>
       <th><%= model_class.human_attribute_name(:description) %></th>
-      <th><%= model_class.human_attribute_name(:created_at) %></th>
+      <% if @scores %><th>Scores</th><% end %>
       <th><%=t '.actions', :default => t("helpers.actions") %></th>
     </tr>
   </thead>
@@ -20,7 +20,7 @@
         <td><%= gift.name %></td>
         <td><%= gift.link %></td>
         <td><%= gift.description %></td>
-        <td><%=l gift.created_at %></td>
+        <% if @scores %><td><%= gift.score %></td><% end %>
         <td>
           <%= link_to t('.edit', :default => t("helpers.links.edit")),
                       edit_gift_path(gift), :class => 'btn btn-mini' %>

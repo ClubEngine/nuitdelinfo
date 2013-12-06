@@ -4,11 +4,13 @@ class GiftsController < ApplicationController
   # GET /gifts
   # GET /gifts.json
   def index
-    @gifts = Gift.all
     if ducks_yesno[:ducks_yes] && ducks_params[:ducks_no]
       yes = ducks_yesno[:ducks_yes]
       no = ducks_params[:ducks_no]
       @gifts = Gift.bests(yes, no)
+      @scores = true
+    else
+      @gifts = Gift.all
     end
   end
 

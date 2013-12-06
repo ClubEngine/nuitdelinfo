@@ -50,7 +50,7 @@ class DucksController < ApplicationController
 
   # GET /ducks/new
   def new
-    @duck = Duck.new
+    @duck = Duck.new({value: 50})
   end
 
   # GET /ducks/1/edit

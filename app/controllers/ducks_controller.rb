@@ -4,32 +4,32 @@ class DucksController < ApplicationController
   # GET /ducks
   # GET /ducks.json
   def index
-    if params[:random] == "true"
+    if params[:smart] == "true"
       if ducks_yesno[:ducks_yes] && ducks_yesno[:ducks_no]
         yes = ducks_yesno[:ducks_yes]
         no = ducks_yesno[:ducks_no]
       	gifts = Gift.bests(yes,no)[0..19]  
 
-		best_pertinence = 0
-
-		# parcours tous les cannards, pour chaque cannard calcul la
-		# la pertinence de celui-ci
-		ducks = Duck.all
-		@best_duck = ducks[0]
-		ducks.all do |d|
-			pertinence = 0;
-			associations = d.associations
-			gifts.each do |g|
-				a = assotiations.where(gift: g);
-				if a != null
-					pertinence += (50-a.value)**2
-				end
-			end
-			if pertinence > best_pertinence 
-				@best_duck = d
-			end
-		end
-		@ducks=Duck.all
+    		best_pertinence = 0
+    
+    		# parcours tous les cannards, pour chaque cannard calcul la
+    		# la pertinence de celui-ci
+    		ducks = Duck.all
+    		@best_duck = ducks[0]
+    		ducks.all do |d|
+    			pertinence = 0;
+    			associations = d.associations
+    			gifts.each do |g|
+    				a = assotiations.where(gift: g);
+    				if a != null
+    					pertinence += (50-a.value)**2
+    				end
+    			end
+    			if pertinence > best_pertinence 
+    				@best_duck = d
+    			end
+    		end
+  		  @ducks=Duck.all
       else
         if params[:number]
           @ducks = Duck.order("RANDOM()").limit(Integer(params[:number]))

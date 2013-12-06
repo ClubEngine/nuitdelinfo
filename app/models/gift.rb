@@ -6,7 +6,7 @@ class Gift < ActiveRecord::Base
   attr_accessor :score
   
   def self.bests(ducks_yes, ducks_no)
-    gifts = Gift.includes(:associations => :ducks)
+    gifts = Gift.includes(:associations => :duck)
     gifts.each do |gift|
       gift.score = gift.associations.inject do |sum, assoc|
         diff = assoc.value - 50

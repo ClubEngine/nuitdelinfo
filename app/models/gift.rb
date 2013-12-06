@@ -6,21 +6,22 @@ class Gift < ActiveRecord::Base
   attr_accessor :score
   
   def self.bests(ducks_yes, ducks_no)
-    gifts = Gift.includes(:associations => :ducks)
+    gifts = Gift.includes(:associations => :duck)
     gifts.each do |gift|
-      gift.score = gift.associations.injects do |sum, assoc|
+      s = 0
+      gift.associations.each do |assoc|
         diff = assoc.value - 50
         if assoc.duck
-          if ducks_yes.include?(assoc.duck.id)
-            sum += diff
+          if ducks_yes.include?(assoc.duck.id.to_s)
+            s += diff
           end
-          if ducks_no.include?(assoc.duck.id)
-            sum -= diff
+          if ducks_no.include?(assoc.duck.id.to_s)
+            s -= diff
           end
         end
-        sum
       end
+      gift.score = s
     end
-    gifts.sort_by(:score)
+    gifts.sort_by{|g|[g.score]}.reverse
   end
 end

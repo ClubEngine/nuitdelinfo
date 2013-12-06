@@ -4,11 +4,13 @@ class GiftsController < ApplicationController
   # GET /gifts
   # GET /gifts.json
   def index
-    @gifts = Gift.all
-    if ducks_yesno[:ducks_yes] && ducks_params[:ducks_no]
+    if ducks_yesno[:ducks_yes] && ducks_yesno[:ducks_no]
       yes = ducks_yesno[:ducks_yes]
-      no = ducks_params[:ducks_no]
+      no = ducks_yesno[:ducks_no]
       @gifts = Gift.bests(yes, no)
+      @scores = true
+    else
+      @gifts = Gift.all
     end
   end
 
@@ -30,11 +32,6 @@ class GiftsController < ApplicationController
   # POST /gifts.json
   def create
     @gift = Gift.new(gift_params)
-    associations_params.each do |association_params|
-      assoc = Association.find_by_id(Integer(association_params[1][:id]))
-      assoc.update(association_params[1])
-    end
-
     respond_to do |format|
       if @gift.save
         format.html { redirect_to @gift, notice: 'Gift was successfully created.' }
@@ -49,11 +46,6 @@ class GiftsController < ApplicationController
   # PATCH/PUT /gifts/1
   # PATCH/PUT /gifts/1.json
   def update
-    associations_params.each do |association_params|
-      assoc = Association.find_by_id(Integer(association_params[1][:id]))
-      assoc.update(association_params[1])
-    end
-    
     respond_to do |format|
       if @gift.update(gift_params)
         format.html { redirect_to @gift, notice: 'Gift was successfully updated.' }
@@ -88,7 +80,7 @@ class GiftsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def gift_params
-      params.require(:gift).permit(:name, :link, :description)
+      params.require(:gift).permit(:name, :link, :description, associations_attributes: [:id, :duck_id, :gift_id, :value])
     end
     def associations_params
       params.permit(associations: [:id, :duck_id, :gift_id, :value])

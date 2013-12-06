@@ -10,23 +10,24 @@ class DucksController < ApplicationController
         no = ducks_yesno[:ducks_no]
       	gifts = Gift.bests(yes,no)[0..19]  
 
-		best_pertinence = 0
+		@best_pertinence = 0
 
 		# parcours tous les cannards, pour chaque cannard calcul la
 		# la pertinence de celui-ci
-		ducks = Duck.all
+		ducks = Duck.where.not(id: yes).where.not(id: no)
 		@best_duck = ducks[0]
-		ducks.all do |d|
+		ducks.each do |d|
 			pertinence = 0;
 			associations = d.associations
 			gifts.each do |g|
-				a = assotiations.where(gift: g);
-				if a != null
+				a = associations.where(gift: g).first;
+				if a 
 					pertinence += (50-a.value)**2
 				end
 			end
-			if pertinence > best_pertinence 
+			if pertinence > @best_pertinence 
 				@best_duck = d
+				@best_pertinence = pertinence
 			end
 		end
 		@ducks=Duck.all

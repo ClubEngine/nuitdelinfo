@@ -4,12 +4,13 @@ class DucksController < ApplicationController
   # GET /ducks
   # GET /ducks.json
   def index
-    if params[:random] == "true"
+    if params[:smart] == "true"
       if ducks_yesno[:ducks_yes] && ducks_yesno[:ducks_no]
         yes = ducks_yesno[:ducks_yes]
         no = ducks_yesno[:ducks_no]
       	gifts = Gift.bests(yes,no)[0..19]  
 
+<<<<<<< HEAD
 		@best_pertinence = 0
 
 		# parcours tous les cannards, pour chaque cannard calcul la
@@ -31,7 +32,7 @@ class DucksController < ApplicationController
 			end
 		end
 		@ducks=Duck.all
-      else
+     else
         if params[:number]
           @ducks = Duck.order("RANDOM()").limit(Integer(params[:number]))
         else

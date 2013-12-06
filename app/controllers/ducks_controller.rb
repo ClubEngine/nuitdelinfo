@@ -17,14 +17,20 @@ class DucksController < ApplicationController
 		ducks = Duck.where.not(id: yes).where.not(id: no)
 		@best_duck = ducks[0]
 		ducks.each do |d|
-			pertinence = 0;
+			ecart_quadra = 0
+			ecart_reel = 0
 			associations = d.associations
 			gifts.each do |g|
 				a = associations.where(gift: g).first;
 				if a 
-					pertinence += (50-a.value)**2
+					ecart_quadra += (50-a.value)**2
+					ecart_reel += 50-a.value
 				end
 			end
+			if ecart_reel == 0
+				ecart_reel =1
+			end
+			pertinence = ecart_quadra/ecart_reel.abs;
 			if pertinence > @best_pertinence 
 				@best_duck = d
 				@best_pertinence = pertinence

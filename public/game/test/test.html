@@ -1,36 +1,163 @@
-<html>
-  <body>
-  	<div id="test"></div>
-  	<script src="http://threejs.org/three.min.js"></script>
-    <script type="text/javascript">
-    function loadDuck(d) {
-    	document.getElementById("test").innerHTML = d.duck;
-    }
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>three.js webgl - collada</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<style>
+			body {
+				font-family: Monospace;
+				background-color: #000000;
+				margin: 0px;
+				overflow: hidden;
+			}
 
-    function loadXMLDoc()
-	{
-		var xmlhttp;
-		if(window.XMLHttpRequest) {
-			xmlhttp = new XMLHttpRequest();
-		}
-		else {
-				xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-		}
-		xmlhttp.onreadystatechange=function()
-  		{
-  			document.getElementById("test").innerHTML = xmlhttp.readyState+"<br>"+xmlhttp.status;
-  			if (xmlhttp.readyState==4 && xmlhttp.status==200) {
-    			var resp = JSON.parse(xmlhttp.responseText);
-    			loadDuck(resp);
-    		}
-  		}
-		xmlhttp.open("GET","test.txt",true);
-		xmlhttp.send();
-	}
+			#info {
+				color: #fff;
+				position: absolute;
+				top: 10px;
+				width: 100%;
+				text-align: center;
+				z-index: 100;
+				display:block;
 
-	//loadXMLDoc();
-	loadDuck({"duck": "dfkjhdg"});
-      
-    </script>
-  </body>
+			}
+
+			a { color: skyblue }
+		</style>
+	</head>
+	<body>
+
+		<script src="three.min.js"></script>
+
+		<script src="ColladaLoader.js"></script>
+
+		<script>
+
+			var w = window.innerWidth;
+			var h = window.innerHeight;
+
+			var container, stats;
+
+			var camera, scene, renderer, objects;
+			var particleLight, pointLight;
+			var dae;
+
+			// LIGHTS
+
+			container = document.createElement( 'div' );
+			document.body.appendChild( container );
+
+			camera = new THREE.PerspectiveCamera( 45, w/h, 1, 2000 );
+			camera.position.set( 0, 0, 4 );
+
+			scene = new THREE.Scene();
+
+			particleLight = new THREE.Mesh( new THREE.SphereGeometry( 4, 8, 8 ), new THREE.MeshBasicMaterial( { color: 0xffffff } ) );
+			scene.add( particleLight );
+
+			scene.add( new THREE.AmbientLight( 0xcccccc ) );2000
+
+			var directionalLight = new THREE.DirectionalLight( 0xeeeeee );
+			directionalLight.position.x = 0.5;
+			directionalLight.position.y = 0.5;
+			directionalLight.position.z = 0.5;
+			directionalLight.position.normalize();
+			scene.add( directionalLight );
+
+			pointLight = new THREE.PointLight( 0xffffff, 4 );
+			pointLight.position = particleLight.position;
+			scene.add( pointLight );
+
+			renderer = new THREE.WebGLRenderer();
+			renderer.setSize( w, h );
+
+			container.appendChild( renderer.domElement );
+
+			// END LIGHTS
+
+			var ducks = [];
+
+			function duck(mesh) {
+				this.speedx = (Math.random()-.5)/4;
+				this.speedy = .3;
+				mesh.position.y = -3;
+				mesh.position.x = (Math.random()-.5)*1.5;
+				this.mesh = mesh;
+				scene.add( mesh );
+				animate();
+				camera.lookAt( scene.position );
+				requestAnimationFrame( animate );
+			}
+
+			function loadXMLDoc() {
+				var xmlhttp;
+				if(window.XMLHttpRequest) {
+					xmlhttp = new XMLHttpRequest();
+				}
+				else {
+						xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+				}
+				xmlhttp.onreadystatechange=function()
+		  		{
+		  			alert(xmlhttp.readyState+"\n"+xmlhttp.status);
+		  			if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+		  				alert(xmlhttp.responseText);
+		    			var resp = JSON.parse(xmlhttp.responseText);
+		    			alert(resp);
+		    		}
+		  		}
+				xmlhttp.open("GET","http://theduckkiller9.herokuapp.com/ducks",true);
+				xmlhttp.send();
+			}
+			loadXMLDoc();
+
+			function new_duck() {
+				var loader = new THREE.ColladaLoader();
+				//var loader = new THREE.JSONLoader( true );
+				loader.load( 'duck.dae', function ( collada ) {
+				//loader.loadAjaxJSON(loader, 'http://theduckkiller9.herokuapp.com/ducks', function(callbak) {
+					dae = collada.scene;
+
+					dae.scale.x = dae.scale.y = dae.scale.z = 0.2;
+					dae.updateMatrix();
+
+					ducks.push(new duck(dae));
+
+				});//, './', function(progress, result) { alert(progress.loaded); } ); 
+			}
+
+			function remove_duck(object) {
+			    //var selectedObject = scene.getObjectByNaexample three jsme(object.name);
+			    scene.remove( object );
+			}
+
+			new_duck();
+
+			function animate() {
+
+				for(var i in ducks) {
+					ducks[i].speedy -= .01;
+					ducks[i].mesh.position.x += ducks[i].speedx;
+					ducks[i].mesh.position.y += ducks[i].speedy;
+
+					ducks[i].mesh.rotation.x += .05;
+					ducks[i].mesh.rotation.y += .05;
+					ducks[i].mesh.rotation.z += .05;
+
+					if(ducks[i].mesh.position.y < -3.5) {
+						remove_duck(ducks[i].mesh);
+						delete ducks[i];
+						new_duck();
+					}
+				}
+
+				renderer.render( scene, camera );
+
+				requestAnimationFrame( animate );
+
+			}
+
+		</script>
+	</body>
 </html>

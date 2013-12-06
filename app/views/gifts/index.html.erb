@@ -5,7 +5,6 @@
 <table class="table table-striped">
   <thead>
     <tr>
-      <th><%= model_class.human_attribute_name(:id) %></th>
       <th><%= model_class.human_attribute_name(:name) %></th>
       <th><%= model_class.human_attribute_name(:link) %></th>
       <th><%= model_class.human_attribute_name(:description) %></th>
@@ -16,9 +15,8 @@
   <tbody>
     <% @gifts.each do |gift| %>
       <tr>
-        <td><%= link_to gift.id, gift_path(gift) %></td>
-        <td><%= gift.name %></td>
-        <td><%= gift.link %></td>
+        <td><%= link_to gift.name, gift_path(gift) %></td>
+  		<td><%= image_tag(gift.link, :alt => gift.link, :width => "50") %></td>
         <td><%= gift.description %></td>
         <% if @scores %><td><%= gift.score %></td><% end %>
         <td>

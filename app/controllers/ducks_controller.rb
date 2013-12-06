@@ -10,12 +10,12 @@ class DucksController < ApplicationController
         no = ducks_yesno[:ducks_no]
       	gifts = Gift.bests(yes,no)[0..19]  
 
-		@best_pertinence = 0
+		best_pertinence = 0
 
 		# parcours tous les cannards, pour chaque cannard calcul la
 		# la pertinence de celui-ci
 		ducks = Duck.where.not(id: yes).where.not(id: no)
-		@best_duck = ducks[0]
+		best_duck = ducks[0]
 		ducks.each do |d|
 			ecart_quadra = 0
 			ecart_reel = 0
@@ -31,12 +31,13 @@ class DucksController < ApplicationController
 				ecart_reel =1
 			end
 			pertinence = ecart_quadra/ecart_reel.abs;
-			if pertinence > @best_pertinence 
-				@best_duck = d
-				@best_pertinence = pertinence
+			if pertinence > best_pertinence 
+				best_duck = d
+				best_pertinence = pertinence
 			end
 		end
-		@ducks=Duck.all
+		@ducks=[]
+		@ducks[0] = best_duck
      else
         if params[:number]
           @ducks = Duck.order("RANDOM()").limit(Integer(params[:number]))
